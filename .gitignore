@@ -1,5 +1,7 @@
 __pycache__/
 venv/
+.idea/
 *.py[cod]
 20-11-2022.xlsx
 rules.txt
+
