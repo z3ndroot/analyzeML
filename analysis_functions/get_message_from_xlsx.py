@@ -1,13 +1,21 @@
 from openpyxl import load_workbook
+from pypred import Predicate
 
 
 class FileXSLX:
     def __init__(self, filename):
-        self.wb = load_workbook(filename=filename)
-        self.names_columns_dict = None
+        self.filename = filename
+        self._wb = None
+        self._names_columns_dict = None
 
     @property
-    def sheets_names(self):
+    def wb(self):
+        if self._wb is None:
+            self._wb = load_workbook(filename=self.filename)
+        return self._wb
+
+    @property
+    def sheet_names(self):
         return self.wb.sheetnames
 
     def columns_names(self, name_sheet):
@@ -17,12 +25,12 @@ class FileXSLX:
             max_col=worksheet.max_column,
             values_only=True
         )
-        columns_names = [title[0] for title in iter_cols]
+        columns_names = [title[0] for title in iter_cols if title[0] is not None]
 
-        self.names_columns_dict = {title: num for num, title in enumerate(
+        self._names_columns_dict = {title: num for num, title in enumerate(
             columns_names,
             start=1,
-        ) if title is not None}
+        )}
 
         return columns_names
 
