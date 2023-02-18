@@ -1,5 +1,5 @@
 __all__ = (
-    "FileXSLX",
+    "ExcelReader",
 )
 
-from .get_message_from_xlsx import FileXSLX
+from .excel_reader import ExcelReader

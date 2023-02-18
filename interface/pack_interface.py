@@ -1,7 +1,7 @@
 from PySide2 import QtWidgets
 
 from .interface_settings import  Ui_MainWindow
-from analysis_functions import FileXSLX
+from analysis_functions import ExcelReader
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -11,6 +11,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton_2.clicked.connect(self.open_rules)
         self.pushButton_3.clicked.connect(self.path_to_file)
         self.comboBox.currentTextChanged.connect(self.update_columns)
+        self.pushButton_4.clicked.connect(self.analyze)
         self.__file = None
 
 
@@ -19,7 +20,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         xlsx_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, filter="*.xlsx")
         self.lineEdit.setText(xlsx_file)
         if self.lineEdit.text():
-            self.__file = FileXSLX(self.lineEdit.text())
+            self.__file = ExcelReader(self.lineEdit.text())
             self.comboBox.addItems(self.__file.sheet_names)
 
     def update_columns(self):
@@ -36,5 +37,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def path_to_file(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self)
         self.lineEdit_3.setText(f"{path}/result.xlsx")
+
+    def analyze(self):
+        result = self.__file.get_messages(
+            sheet_name=self.comboBox.currentText(),
+            column_name=self.comboBox_2.currentText()
+        )
+    # TODO...
 
 
