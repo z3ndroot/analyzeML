@@ -1,7 +1,7 @@
 from PySide2 import QtWidgets
 
 from .interface_settings import  Ui_MainWindow
-from analysis_functions import ExcelReader
+from pyxlutils import ExcelReader
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
