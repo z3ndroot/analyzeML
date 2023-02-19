@@ -1,7 +1,11 @@
 from PySide2 import QtWidgets
 
 from .interface_settings import  Ui_MainWindow
-from pyxlutils import ExcelReader
+from pyxlutils import (
+    ExcelReader,
+    ExcelWriter,
+    analyze_messages_with_rules,
+)
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -39,10 +43,14 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lineEdit_3.setText(f"{path}/result.xlsx")
 
     def analyze(self):
-        result = self.__file.get_messages(
+        messages = self.__file.get_messages(
             sheet_name=self.comboBox.currentText(),
             column_name=self.comboBox_2.currentText()
         )
-    # TODO...
+        result = analyze_messages_with_rules(messages, self.lineEdit_2.text())
+        ew = ExcelWriter(self.lineEdit_3.text())
+        ew.write_data(result)
+
+
 
 
