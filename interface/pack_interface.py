@@ -1,11 +1,13 @@
 from PySide2 import QtWidgets
 
-from .interface_settings import  Ui_MainWindow
+from .interface_settings import Ui_MainWindow
+from pathcheck import check_path
 from pyxlutils import (
     ExcelReader,
     ExcelWriter,
     analyze_messages_with_rules,
 )
+
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -18,14 +20,21 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton_4.clicked.connect(self.analyze)
         self.__file = None
 
-
     def open_xlsx(self):
         self.comboBox.clear()
-        xlsx_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, filter="*.xlsx")
-        self.lineEdit.setText(xlsx_file)
-        if self.lineEdit.text():
-            self.__file = ExcelReader(self.lineEdit.text())
+        path, extension = QtWidgets.QFileDialog.getOpenFileName(self, filter="*.xlsx;;*.json")
+        self.lineEdit.setText(path)
+        file_xlsx = self.lineEdit.text()
+
+        if not check_path(file_xlsx):
+            return
+        if extension == "*.xlsx":
+            self.__file = ExcelReader(file_xlsx)
             self.comboBox.addItems(self.__file.sheet_names)
+        elif extension == "*.json":
+            self.__file = None
+            self.comboBox_2.clear()
+            pass
 
     def update_columns(self):
         if self.comboBox.currentText():
@@ -33,25 +42,25 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             name_columns = self.__file.columns_names(self.comboBox.currentText())
             self.comboBox_2.addItems(name_columns)
 
-
     def open_rules(self):
         rules_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, filter="*.txt")
         self.lineEdit_2.setText(rules_file)
 
     def path_to_file(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self)
-        self.lineEdit_3.setText(f"{path}/result.xlsx")
+        self.lineEdit_3.setText(path)
 
     def analyze(self):
-        if self.__file is not None:
+        path_save = self.lineEdit_3.text()
+        path_rules = self.lineEdit_2.text()
+        if not (check_path(path_rules) and check_path(path_save)):
+            return
+        if isinstance(self.__file, ExcelReader):
             messages = self.__file.get_messages(
                 sheet_name=self.comboBox.currentText(),
                 column_name=self.comboBox_2.currentText()
             )
-            result = analyze_messages_with_rules(messages, self.lineEdit_2.text())
-            ew = ExcelWriter(self.lineEdit_3.text())
-            ew.write_data(result)
-            self.MessageBox.exec_()
-
-
-
+        result = analyze_messages_with_rules(messages, path_rules)
+        ew = ExcelWriter(path_save+"/result.xlsx")
+        ew.write_data(result)
+        self.MessageBox.exec_()
