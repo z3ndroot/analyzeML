@@ -6,6 +6,7 @@ from pyxlutils import (
     ExcelReader,
     ExcelWriter,
     analyze_messages_with_rules,
+    JSONMetaData,
 )
 
 
@@ -24,17 +25,17 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBox.clear()
         path, extension = QtWidgets.QFileDialog.getOpenFileName(self, filter="*.xlsx;;*.json")
         self.lineEdit.setText(path)
-        file_xlsx = self.lineEdit.text()
+        file = self.lineEdit.text()
 
-        if not check_path(file_xlsx):
+        if not check_path(file):
             return
         if extension == "*.xlsx":
-            self.__file = ExcelReader(file_xlsx)
+            self.__file = ExcelReader(file)
             self.comboBox.addItems(self.__file.sheet_names)
         elif extension == "*.json":
-            self.__file = None
+            self.__file = JSONMetaData(file)
             self.comboBox_2.clear()
-            pass
+
 
     def update_columns(self):
         if self.comboBox.currentText():
@@ -53,6 +54,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def analyze(self):
         path_save = self.lineEdit_3.text()
         path_rules = self.lineEdit_2.text()
+
         if not (check_path(path_rules) and check_path(path_save)):
             return
         if isinstance(self.__file, ExcelReader):
@@ -60,7 +62,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 sheet_name=self.comboBox.currentText(),
                 column_name=self.comboBox_2.currentText()
             )
-        result = analyze_messages_with_rules(messages, path_rules)
+            result = analyze_messages_with_rules(messages, path_rules)
+
+        elif isinstance(self.__file, JSONMetaData):
+            # TODO...
+            pass
+
+
         ew = ExcelWriter(path_save+"/result.xlsx")
         ew.write_data(result)
         self.MessageBox.exec_()
