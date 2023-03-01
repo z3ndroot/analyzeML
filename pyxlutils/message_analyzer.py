@@ -6,5 +6,5 @@ def analyze_messages_with_rules(messages: list[str], rules_file: str):
         list_analyze = []
         pr = Predicate(rules)
         for message in messages:
-            list_analyze.append((message, pr.analyze({"comment_lowercased": message})[0]))
+            list_analyze.append((message, pr.analyze({"comment_lowercased": message.lower()})[0]))
         return list_analyze

@@ -1,5 +1,4 @@
 from openpyxl import load_workbook
-from pypred import Predicate
 
 
 class ExcelReader:
@@ -32,9 +31,6 @@ class ExcelReader:
     def get_messages(self, sheet_name, column_name):
         sheet = self.wb[sheet_name]
         index_column = self._names_columns_dict[column_name]
-        column_values = [row[index_column] for row in sheet.iter_rows(min_row=2,values_only=True)]
+        column_values = [row[index_column] for row in sheet.iter_rows(min_row=2, values_only=True)]
 
         return column_values
-
-
-
