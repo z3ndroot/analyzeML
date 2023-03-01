@@ -201,6 +201,10 @@ class Ui_MainWindow(object):
             "}\n"
             ""
         )
+        self.MessageBox = QMessageBox()
+        self.MessageBox.setIcon(QMessageBox.Information)
+        self.MessageBox.setText("Done✅")
+        self.MessageBox.setWindowTitle("Information")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -243,4 +247,3 @@ class Ui_MainWindow(object):
         self.label_5.setText(
             QCoreApplication.translate("MainWindow", "Name column", None)
         )
-

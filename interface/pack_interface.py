@@ -43,14 +43,15 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lineEdit_3.setText(f"{path}/result.xlsx")
 
     def analyze(self):
-        messages = self.__file.get_messages(
-            sheet_name=self.comboBox.currentText(),
-            column_name=self.comboBox_2.currentText()
-        )
-        result = analyze_messages_with_rules(messages, self.lineEdit_2.text())
-        ew = ExcelWriter(self.lineEdit_3.text())
-        ew.write_data(result)
-
+        if self.__file is not None:
+            messages = self.__file.get_messages(
+                sheet_name=self.comboBox.currentText(),
+                column_name=self.comboBox_2.currentText()
+            )
+            result = analyze_messages_with_rules(messages, self.lineEdit_2.text())
+            ew = ExcelWriter(self.lineEdit_3.text())
+            ew.write_data(result)
+            self.MessageBox.exec_()
 
 
 
