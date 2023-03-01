@@ -6,6 +6,7 @@ from pyxlutils import (
     ExcelReader,
     ExcelWriter,
     analyze_messages_with_rules,
+    analyze_meta_with_rules,
     JSONMetaData,
 )
 
@@ -20,6 +21,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBox.currentTextChanged.connect(self.update_columns)
         self.pushButton_4.clicked.connect(self.analyze)
         self.__file = None
+        self.__data = None
 
     def open_xlsx(self):
         self.comboBox.clear()
@@ -62,13 +64,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 sheet_name=self.comboBox.currentText(),
                 column_name=self.comboBox_2.currentText()
             )
-            result = analyze_messages_with_rules(messages, path_rules)
+            self.__data = analyze_messages_with_rules(messages, path_rules)
 
         elif isinstance(self.__file, JSONMetaData):
-            # TODO...
-            pass
+            self.__data = analyze_meta_with_rules(self.__file.meta_info, path_rules)
 
 
         ew = ExcelWriter(path_save+"/result.xlsx")
-        ew.write_data(result)
+        ew.write_data(self.__data)
         self.MessageBox.exec_()
