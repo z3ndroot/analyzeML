@@ -31,6 +31,11 @@ class ExcelReader:
     def get_messages(self, sheet_name, column_name):
         sheet = self.wb[sheet_name]
         index_column = self._names_columns_dict[column_name]
-        column_values = [row[index_column] for row in sheet.iter_rows(min_row=2, values_only=True)]
+        column_values = []
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            if not row[index_column]:
+                continue
+            column_values.append(row[index_column])
+
 
         return column_values
