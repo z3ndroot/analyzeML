@@ -16,5 +16,5 @@ def analyze_meta_with_rules(meta: list[dict], rules_file: str):
     list_analyze = []
     pr = Predicate(rules)
     for data in meta:
-        list_analyze.append((data["comment_lowercased"], pr.evaluate(data)))
+        list_analyze.append((data["id"], data["comment_lowercased"], pr.evaluate(data)))
     return list_analyze

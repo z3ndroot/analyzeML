@@ -64,12 +64,14 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 sheet_name=self.comboBox.currentText(),
                 column_name=self.comboBox_2.currentText()
             )
-            self.__data = analyze_messages_with_rules(messages, path_rules)
+            data = analyze_messages_with_rules(messages, path_rules)
+            ew = ExcelWriter(path_save + "/result_excel.xlsx", name_column=["Message", "Result"])
+            ew.write_data(data)
 
         elif isinstance(self.__file, JSONMetaData):
-            self.__data = analyze_meta_with_rules(self.__file.meta_info, path_rules)
+            data = analyze_meta_with_rules(self.__file.meta_info, path_rules)
+            ew = ExcelWriter(path_save + "/result_json.xlsx", name_column=["Id","Message", "Result"])
+            ew.write_data(data)
 
 
-        ew = ExcelWriter(path_save+"/result.xlsx")
-        ew.write_data(self.__data)
         self.MessageBox.exec_()
