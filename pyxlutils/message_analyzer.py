@@ -18,3 +18,11 @@ def analyze_meta_with_rules(meta: list[dict], rules_file: str):
     for data in meta:
         list_analyze.append((data["id"], data["comment_lowercased"], pr.evaluate(data)))
     return list_analyze
+
+
+def check_predicate(rules_file: str):
+    with open (rules_file, "r", encoding="UTF8") as file:
+        rules = file.read()
+    pr = Predicate(rules)
+    error = pr.errors().get("errors")
+    return " ".join(error)
