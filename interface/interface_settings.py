@@ -85,24 +85,6 @@ class Ui_MainWindow(object):
         self.label_2.setGeometry(QRect(50, 290, 61, 23))
         self.label_2.setFont(font3)
         self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
-        self.lineEdit_3 = QLineEdit(self.centralwidget)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.lineEdit_3.setGeometry(QRect(110, 330, 231, 23))
-        self.lineEdit_3.setFont(font2)
-        self.lineEdit_3.setStyleSheet(
-            "	border: 2px solid rgb(46, 51, 73);\n"
-            "	border-radius: 20px;\n"
-            "	color: #FFF;\n"
-            "	\n"
-            "background-color: rgb(67, 75, 106);"
-        )
-        self.pushButton_3 = QPushButton(self.centralwidget)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_3.setGeometry(QRect(350, 330, 75, 23))
-        self.pushButton_3.setFont(font1)
-        self.pushButton_3.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n" "border-radius: 10px;"
-        )
         self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName("label_3")
         self.label_3.setGeometry(QRect(50, 330, 61, 23))
@@ -110,7 +92,7 @@ class Ui_MainWindow(object):
         self.label_3.setStyleSheet("color: rgb(255, 255, 255);")
         self.pushButton_4 = QPushButton(self.centralwidget)
         self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_4.setGeometry(QRect(180, 390, 101, 31))
+        self.pushButton_4.setGeometry(QRect(180, 360, 101, 31))
         font4 = QFont()
         font4.setFamily("Yu Gothic UI")
         font4.setPointSize(11)
@@ -203,8 +185,9 @@ class Ui_MainWindow(object):
         )
         self.MessageBox = QMessageBox()
         self.MessageBox.setIcon(QMessageBox.Information)
-        self.MessageBox.setText("Done✅")
         self.MessageBox.setWindowTitle("Information")
+        self.MessageBox_2 = QMessageBox()
+        self.MessageBox_2.setIcon(QMessageBox.Critical)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -231,12 +214,6 @@ class Ui_MainWindow(object):
         )
         self.label_2.setText(
             QCoreApplication.translate("MainWindow", "Rules file", None)
-        )
-        self.pushButton_3.setText(
-            QCoreApplication.translate("MainWindow", "Browse", None)
-        )
-        self.label_3.setText(
-            QCoreApplication.translate("MainWindow", "Save file", None)
         )
         self.pushButton_4.setText(
             QCoreApplication.translate("MainWindow", "Analyze", None)
