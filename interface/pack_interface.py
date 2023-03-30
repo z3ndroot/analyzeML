@@ -27,15 +27,15 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBox.clear()
         path, extension = QtWidgets.QFileDialog.getOpenFileName(self, filter="*.xlsx;;*.json")
         self.lineEdit.setText(path)
-        file = self.lineEdit.text()
+        file_meta = self.lineEdit.text()
 
-        if not check_path(file):
+        if not check_path(file_meta):
             return
         if extension == "*.xlsx":
-            self.__file = ExcelReader(file)
+            self.__file = ExcelReader(file_meta)
             self.comboBox.addItems(self.__file.sheet_names)
         elif extension == "*.json":
-            self.__file = JSONMetaData(file)
+            self.__file = JSONMetaData(file_meta)
             self.comboBox_2.clear()
 
     def update_columns(self):
